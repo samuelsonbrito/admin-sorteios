@@ -39,9 +39,11 @@ export default{
 
     computed: {
         estiloDoBotao(){
-            if(this.estilo == 'padrao' || !this.estilo) return 'botao botao-padrao';
+            if(this.estilo == 'padrao' || !this.estilo) return 'btn btn-default';
 
-            if(this.estilo == 'perigo') return 'botao botao-perigo';
+            if(this.estilo == 'perigo') return 'btn btn-danger';
+
+            if(this.estilo == 'sucesso') return 'btn btn-success';
 
 
         }

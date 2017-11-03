@@ -12,7 +12,7 @@ import 'jquery/dist/jquery.js';
 import 'bootstrap/dist/js/bootstrap.js';
 
 Vue.use(VueResource);
-Vue.http.options.root = 'http://localhost/api-php/';
+Vue.http.options.root = 'http://localhost/api-sorteios/';
 Vue.use(VueRouter);
 
 const router = new VueRouter({

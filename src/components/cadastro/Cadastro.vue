@@ -1,34 +1,34 @@
 <template>
     <div>
         <h1 class="centralizado">Cadastro</h1>
-        <h2 class="centralizado">{{foto.titulo}}</h2>
+        <h2 class="centralizado">{{drows.nome}}</h2>
 
-         <h2 v-if="foto.id" class="centralizado">Alterando</h2>
-         <h2 v-else class="centralizado">Incluindo</h2>
+         <h2 v-if="drows.id" class="centralizado">Alterando</h2>
+         <h2 v-else class="centralizado">Sorteio</h2>
 
         <p class="centralizado" v-show="mensagem">{{mensagem}}</p>
 
         <form @submit.prevent="grava()">
             <div class="controle">
-                <label for="titulo">TÍTULO</label>
-                <input data-vv-as="título" name="titulo" v-validate="{ required: true, min: 3, max: 30 }" id="titulo" autocomplete="off" v-model="foto.titulo">
-                <span v-show="this.errors.has('titulo')">{{ errors.first('titulo') }}</span>
+                <label for="titulo">NOME</label>
+                <input class="form-control" data-vv-as="name" name="name" v-validate="{ required: true, min: 3, max: 30 }" id="name" autocomplete="off" v-model="drows.name">
+                <span v-show="this.errors.has('name')">{{ errors.first('name') }}</span>
             </div>
 
             <div class="controle">
-                <label for="url">URL</label>
-                <input id="url" autocomplete="off" @input="foto.url = $event.target.value" :value="foto.url">
-                <imagem-responsiva :url="foto.url" :titulo="foto.titulo"/>
+                <label for="email">E-MAIL</label>
+                <input class="form-control" id="email" autocomplete="off" @input="drows.email = $event.target.value" :value="drows.email">
             </div>
 
             <div class="controle">
-                <label for="descricao">DESCRIÇÃO</label>
-                <textarea id="descricao" autocomplete="off" @input="foto.descricao = $event.target.value" :value="foto.descricao"></textarea>
+                <label for="testimony">COMO CONHECEU O CANAL?</label>
+                <textarea class="form-control" id="testimony" autocomplete="off" @input="drows.testimony = $event.target.value" :value="drows.testimony"></textarea>
             </div>
 
             <div class="centralizado">
-                <meu-botao rotulo="GRAVAR" tipo="submit"/>
                 <router-link :to="{name: 'home'}"><meu-botao rotulo="VOLTAR" tipo="button"/></router-link>
+                <meu-botao rotulo="GRAVAR" tipo="submit" estilo="sucesso"/>
+                
             </div>
 
         </form>
@@ -40,6 +40,8 @@
 import ImagemResponsiva from '../shared/imagem-responsiva/ImagemResponsiva.vue'
 import Botao from '../shared/botao/Botao.vue';
 import Foto from '../../domain/foto/Foto';
+import Drows from '../../domain/drow/Drows';
+import DrowsService from '../../domain/drow/DrowsService';
 import FotoService from '../../domain/foto/FotoService';
 
 export default {
@@ -51,7 +53,7 @@ export default {
 
   data(){
     return {
-      foto: new Foto(),
+      drows: new Drows(),
       mensagem: '',
       resource: {},
       id: this.$route.params.id
@@ -67,10 +69,10 @@ export default {
 
         if(success){
 
-          this.service.cadastra(this.foto)
+          this.service.cadastra(this.drows)
           .then(() => {
             if(this.id) this.$router.push({name: "home"});
-            this.foto = new Foto();
+            this.drows = new Drows();
             this.mensagem = 'Salvo com sucesso!';
             }, err => {
               this.mensagem = 'Erro ao salvar!'
@@ -85,14 +87,15 @@ export default {
 
   },
   created(){
-    this.service = new FotoService(this.$resource);
+
+    this.service = new DrowsService(this.$resource);
 
     console.log(this.id);
 
     if(this.id){
-      this.service.busca(this.id).then(foto =>{
-         this.foto = foto;
-         console.log(this.foto);
+      this.service.busca(this.id).then(drows =>{
+         this.drows = drows;
+         console.log(this.drows);
       });
     }
 
